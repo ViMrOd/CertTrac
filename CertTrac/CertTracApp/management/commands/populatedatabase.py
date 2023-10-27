@@ -5,6 +5,7 @@ import csv
 from django.db import connection
 
 url = "https://ksuprod.sharepoint.com/:x:/s/AcademicSuccessCenter/EZGQxkXIbB5LiDxCPyCiN8wBYe2w9tli4DqdQHTS4SfLQg?e=JxZmOk"
+# dummy comment
 
 main_csv_file = "CRLA Master Tracker.csv"
 
