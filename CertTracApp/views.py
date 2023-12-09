@@ -81,8 +81,6 @@ def edit_subtopic_session(request):
 def add_tutor_session(request):
     if request.method == 'POST':
         names = request.POST.get('names')
-        #course = request.POST.get('course')
-        #semester = request.POST.get('semester')
         id = request.POST.get('ID')
         date = request.POST.get('date')
 
@@ -257,13 +255,10 @@ def edit_tutor(request):
         if form.is_valid():
             # Save the form data to the database
             form.save()
-            # Redirect to a success page or wherever you want
-            #return HttpResponseRedirect('/success/')
         else:
             # Print form errors for debugging
             print(form.errors)
             print(form.non_field_errors())
-            pass
     else:
         # If the request method is GET, create a form instance with the Tutor instance
         form = TutorForm(instance = tutor)
