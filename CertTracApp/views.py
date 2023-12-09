@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import modelformset_factory, formset_factory
 from .models import Tutor, Takes, Subtopic, Session
-from .forms import TutorForm, TutorLevelForm, TakesForm, SessionForm
+from .forms import TutorForm, TutorLevelForm, TakesForm, SessionForm, AddSessionForm
 from datetime import datetime
 
 from utils import get_tutor_id, get_course_id, count_courses
@@ -13,7 +13,8 @@ def render_team_meetings(request):
     queryset = Session.objects.all().order_by('-id')
     initial = [{'subtopic': session.subtopic.name} for session in queryset]
     formset = SessionFormSet(queryset = queryset, initial = initial)
-    return render(request, 'session.html', {'formset': formset})
+    form = AddSessionForm()
+    return render(request, 'session.html', {'formset': formset, 'form' : form})
 
 
 def search(request):
@@ -43,27 +44,16 @@ def index(request):
 
 def add_subtopic_session(request):
     if request.method == 'POST':
-        name = request.POST.get('course')
-        semester = request.POST.get('semester')
-        in_person_hours = request.POST.get('hours')
-        async_hours = request.POST.get('asynchronous_hours')
-
-        subtopic = Subtopic.objects.get(name = name)
-
-        new_session = Session.objects.create(
-            subtopic = subtopic, 
-            semester = semester, 
-            in_person_hours = in_person_hours, 
-            async_hours = async_hours
-        )
-        new_session.save()
-
+        form = AddSessionForm(request.POST)
+        if form.is_valid():
+            form.save()
+    
     return redirect('team_meetings')
 
 
 def edit_subtopic_session(request):
     if request.method == 'POST':
-        SessionFormSet = modelformset_factory(Session, SessionForm, extra = 0)
+        SessionFormSet = modelformset_factory(Session, SessionForm, extra = 0, can_delete = True)
         formset = SessionFormSet(request.POST, Session.objects.all().order_by('-id'))
         if formset.is_valid():
             formset.save()

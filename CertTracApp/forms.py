@@ -1,6 +1,21 @@
 from django import forms
 from .models import Tutor, Takes, Session, Subtopic
 
+
+class AddSessionForm(forms.ModelForm):
+    semester = forms.CharField(widget=forms.TextInput())
+    class Meta:
+        model = Session
+        fields = '__all__'
+        '''
+        fields = [
+            'subtopic',
+            'semester',
+            'in_person_hours',
+            'async_hours',
+        ]
+        '''
+
 class TutorForm(forms.ModelForm):
     class Meta:
         model = Tutor
