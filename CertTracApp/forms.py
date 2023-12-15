@@ -2,19 +2,28 @@ from django import forms
 from .models import Tutor, Takes, Session, Subtopic
 
 
-class AddSessionForm(forms.ModelForm):
+class AddSessionForm(forms.Form):
+    subtopic = forms.ModelChoiceField(
+        queryset = Subtopic.objects.all(), 
+        to_field_name = 'name', 
+        label = 'Subtopic'
+    )
     semester = forms.CharField(widget=forms.TextInput())
-    class Meta:
-        model = Session
-        fields = '__all__'
-        '''
-        fields = [
-            'subtopic',
-            'semester',
-            'in_person_hours',
-            'async_hours',
-        ]
-        '''
+    In_Person_Hours = forms.DecimalField(max_digits = 5, decimal_places = 2)
+    async_hours = forms.DecimalField(max_digits = 5, decimal_places = 2)
+
+
+class AddTutorForm(forms.Form):
+    first_name = forms.CharField(max_length = 40)
+    last_name = forms.CharField(max_length = 40)
+    email = forms.EmailField()
+    date_hired = forms.CharField(max_length = 40)
+
+
+class AddLoggedHours(forms.Form):
+    name = forms.CharField(max_length = 80)
+    date = forms.DateField()
+    
 
 class TutorForm(forms.ModelForm):
     class Meta:
@@ -52,7 +61,11 @@ class TakesForm(forms.ModelForm):
 
 
 class SessionForm(forms.ModelForm):
-    subtopic = forms.ModelChoiceField(queryset = Subtopic.objects.all(), to_field_name = 'name', label = 'Subtopic')
+    subtopic = forms.ModelChoiceField(
+        queryset = Subtopic.objects.all(), 
+        to_field_name = 'name', 
+        label = 'Subtopic'
+    )
     semester = forms.CharField(widget=forms.TextInput())
     class Meta:
         model = Session
@@ -63,3 +76,10 @@ class SessionForm(forms.ModelForm):
         if 'instance' in kwargs and kwargs['instance']:
             initial_subtopic_name = kwargs['instance'].subtopic.name
             self.initial['subtopic'] = initial_subtopic_name
+
+
+class SearchTutors(forms.ModelForm):
+    name = forms.ModelChoiceField(
+        queryset = Tutor.objects.all(), 
+        to_field_name = 'first_name'
+    )

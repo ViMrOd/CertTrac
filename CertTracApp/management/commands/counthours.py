@@ -52,6 +52,7 @@ class Command(BaseCommand):
             '''
             if tutor.level_1_completion_date: #and not tutor.level_2_completion_date:
                 if tutor.level_1_completion_date == datetime.strptime("2022-05-11", "%Y-%m-%d").date():
+                    '''
                     level_1_hours_in_person = (
                         Takes.objects.filter(
                             tutor_id = tutor.id,
@@ -67,7 +68,7 @@ class Command(BaseCommand):
                         )
                         .aggregate(hours_sum = Sum('session__async_hours'))
                     )['hours_sum'] or 0
-
+                    '''
                     level_2_hours_in_person = (
                         Takes.objects.filter(
                             tutor_id = tutor.id,
@@ -87,6 +88,7 @@ class Command(BaseCommand):
                     )['hours_sum'] or 0
                     
                 elif tutor.level_1_completion_date > datetime.strptime("2022-05-11", "%Y-%m-%d").date():
+                    '''
                     level_1_hours_in_person = (
                         Takes.objects.filter(
                             tutor_id = tutor.id,
@@ -102,7 +104,7 @@ class Command(BaseCommand):
                         )
                         .aggregate(hours_sum = Sum('session__async_hours'))
                     )['hours_sum'] or 0
-
+                    '''
                     level_2_hours_in_person = (
                         Takes.objects.filter(
                             tutor_id = tutor.id,
@@ -124,7 +126,8 @@ class Command(BaseCommand):
                 else:
                     assert(False)
 
-                level_1_hours_total = level_1_hours_in_person + level_1_hours_async
+                level_1_hours_in_person = tutor.level_1_hours_in_person
+                level_1_hours_total = tutor.level_1_hours
                 level_2_hours_total = level_2_hours_in_person + level_2_hours_async
     
                 if level_1_hours_in_person != tutor.level_1_hours_in_person:

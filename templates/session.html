@@ -6,27 +6,6 @@
 
 <form method="post" action="{% url 'session' %}">
     {% csrf_token %}
-    <!--
-    <div class="form-row">
-        <label for="course">Enter Subtopic: </label>
-        <input type="text" id="course" name="course" required>
-    </div>
-
-    <div class="form-row">
-        <label for="semester">Enter Semester: </label>
-        <input type="text" id="semester" name="semester" required>
-    </div>
-
-    <div class="form-row">
-        <label for="hours">Enter In-Person Hours:</label>
-        <input type="number" id="hours" name="hours" step="0.01" required>
-    </div>
-
-    <div class="form-row">
-        <label for="asynchronous_hours">Enter Asynchronous Hours:</label>
-        <input type="number" id="asynchronous_hours" name="asynchronous_hours" step="0.01" required>
-    </div>
-    -->
     {{ form }}
     <button type="submit">Submit</button>
 </form>
@@ -63,8 +42,8 @@
         <th>Semester</th>
         <th>In Person Hours</th>
         <th>Asynchronous Hours</th>
+        <th>Edit</th>
         <th>DELETE</th>
-        <th>Save Session</th>
         {% for form in formset %}
             {{ form.id }}
             <tr>
@@ -73,8 +52,8 @@
                 <td>{{ form.semester }}</td>
                 <td>{{ form.in_person_hours}}</td>
                 <td>{{ form.async_hours }}</td>
+                <td><button type="submit">Edit</button></td>
                 <td>{{ form.DELETE }}</td>
-                <td><button type="submit">Save</button></td>
             </tr>
     {% endfor %}
     </table>
